@@ -11,13 +11,13 @@ namespace FormulaOne.Api.Controllers
     [ApiController]
     public class DriversController : BaseController
     {
-      
-        public DriversController(IUnitOfWork unitOfWork, Mapper mapper) : base(unitOfWork, mapper)
+
+        public DriversController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
 
         }
         [HttpGet]
-     
+
         public async Task<IActionResult> GetDriverById(Guid driverId)
         {
             var driver = await _unitOfWork.Drivers.GetById(driverId);

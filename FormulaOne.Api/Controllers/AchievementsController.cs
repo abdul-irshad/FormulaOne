@@ -11,7 +11,7 @@ namespace FormulaOne.Api.Controllers
     [ApiController]
     public class AchievementsController : BaseController
     {
-        public AchievementsController(IUnitOfWork unitOfWork, Mapper mapper) : base(unitOfWork, mapper)
+        public AchievementsController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 
