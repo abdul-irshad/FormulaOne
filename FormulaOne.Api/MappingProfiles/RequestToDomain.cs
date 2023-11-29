@@ -33,9 +33,9 @@ namespace FormulaOne.Api.MappingProfiles
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
                 ;
 
-            // CreateMap<UpdateDriverRequest, Driver>()
-            //     .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
-            //     ;
+            CreateMap<UpdateDriverRequest, Driver>()
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
+                ;
         }
     }
 }

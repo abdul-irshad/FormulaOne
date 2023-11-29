@@ -43,5 +43,19 @@ namespace FormulaOne.Api.Controllers
 
             return CreatedAtAction(nameof(GetDriverAchievement), new { driverId = result.DriverId }, result);
         }
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateAchivement([FromBody] UpdateDriverAchievementRequest updateDriverAchievementRequest)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _mapper.Map<Achievement>(updateDriverAchievementRequest);
+
+            await _unitOfWork.Achievements.Update(result);
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
+        }
     }
 }

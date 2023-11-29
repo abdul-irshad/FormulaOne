@@ -16,8 +16,17 @@ namespace FormulaOne.Api.Controllers
         {
 
         }
-        [HttpGet]
 
+        [HttpGet("GetAllDrivers")]
+        public async Task<IActionResult> GetAllDrivers()
+        {
+            var driver = await _unitOfWork.Drivers.All();
+
+            return Ok(_mapper.Map<IEnumerable<GetDriverResponse>>(driver));
+        }
+
+        [HttpGet("GetDriverById")]
+        [Route("{driverId:Guid}")]
         public async Task<IActionResult> GetDriverById(Guid driverId)
         {
             var driver = await _unitOfWork.Drivers.GetById(driverId);
@@ -41,6 +50,20 @@ namespace FormulaOne.Api.Controllers
             await _unitOfWork.CompleteAsync();
 
             return CreatedAtAction(nameof(GetDriverById), new { driverId = result.Id }, result);
+        }
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateDriver([FromBody] UpdateDriverRequest updateDriverRequest)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _mapper.Map<Driver>(updateDriverRequest);
+
+            await _unitOfWork.Drivers.Update(result);
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
         }
     }
 }
