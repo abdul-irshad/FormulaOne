@@ -17,7 +17,7 @@ namespace FormulaOne.Api.Controllers
 
         }
 
-        [HttpGet("GetAllDrivers")]
+        [HttpGet]
         public async Task<IActionResult> GetAllDrivers()
         {
             var driver = await _unitOfWork.Drivers.All();
@@ -25,7 +25,7 @@ namespace FormulaOne.Api.Controllers
             return Ok(_mapper.Map<IEnumerable<GetDriverResponse>>(driver));
         }
 
-        [HttpGet("GetDriverById")]
+        [HttpGet]
         [Route("{driverId:Guid}")]
         public async Task<IActionResult> GetDriverById(Guid driverId)
         {
