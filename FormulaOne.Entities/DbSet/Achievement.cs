@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Entities.DbSet;
 
-public class Achievement: BaseEntity
+public class Achievement : BaseEntity
 {
     public int RaceWins { get; set; }
     public int PolePosition { get; set; }
@@ -9,5 +9,4 @@ public class Achievement: BaseEntity
     public Guid DriverId { get; set; }
 
     public virtual Driver? Driver { get; set; }
-    
 }

@@ -1,8 +1,7 @@
 ﻿using FormulaOne.Entities.DbSet;
 
-namespace FormulaOne.DataService.Repositories.Interfaces
+namespace FormulaOne.DataService.Repositories.Interfaces;
+
+public interface IDriverRepository : IGenericRepository<Driver>
 {
-    public interface IDriverRepository : IGenericRepository<Driver>
-    {
-    }
 }

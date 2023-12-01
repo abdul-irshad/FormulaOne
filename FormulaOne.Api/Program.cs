@@ -12,8 +12,6 @@ var connectionString = builder.Configuration.GetConnectionString("FormulaOneConn
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 
-
-
 // Add services to the container.
 
 builder.Services.AddControllers();

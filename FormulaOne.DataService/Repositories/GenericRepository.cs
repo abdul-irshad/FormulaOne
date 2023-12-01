@@ -7,7 +7,6 @@ namespace FormulaOne.DataService.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-
     public readonly ILogger _logger;
     protected AppDbContext _context;
     internal DbSet<T> _dbSet;
@@ -19,6 +18,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
         _dbSet = context.Set<T>();
     }
+
     public virtual Task<IEnumerable<T>> All()
     {
         throw new NotImplementedException();

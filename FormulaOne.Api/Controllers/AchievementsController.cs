@@ -5,57 +5,52 @@ using FormulaOne.Entities.Dtos.Requests;
 using FormulaOne.Entities.Dtos.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FormulaOne.Api.Controllers
+namespace FormulaOne.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AchievementsController : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AchievementsController : BaseController
+    public AchievementsController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
-        public AchievementsController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-        {
-        }
+    }
 
-        [HttpGet]
-        [Route("{driverId:guid}")]
+    [HttpGet]
+    [Route("{driverId:guid}")]
+    public async Task<IActionResult> GetDriverAchievement(Guid driverId)
+    {
+        var driverAchievement = await _unitOfWork.Achievements.GetDriverAchievementAsync(driverId);
 
-        public async Task<IActionResult> GetDriverAchievement(Guid driverId)
-        {
-            var driverAchievement = await _unitOfWork.Achievements.GetDriverAchievementAsync(driverId);
+        if (driverAchievement == null) return NotFound("Achievement Not Found");
+        return Ok(_mapper.Map<DriverAchievementResponse>(driverAchievement));
+    }
 
-            if (driverAchievement == null)
-            {
-                return NotFound("Achievement Not Found");
+    [HttpPost("")]
+    public async Task<IActionResult> AddAchievement([FromBody] CreateDriverAchievementRequest achievementRequest)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            }
-            return Ok(_mapper.Map<DriverAchievementResponse>(driverAchievement));
-        }
+        var result = _mapper.Map<Achievement>(achievementRequest);
 
-        [HttpPost("")]
-        public async Task<IActionResult> AddAchievement([FromBody] CreateDriverAchievementRequest achievementRequest)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        await _unitOfWork.Achievements.Add(result);
+        await _unitOfWork.CompleteAsync();
 
-            var result = _mapper.Map<Achievement>(achievementRequest);
+        return CreatedAtAction(nameof(GetDriverAchievement), new { driverId = result.DriverId }, result);
+    }
 
-            await _unitOfWork.Achievements.Add(result);
-            await _unitOfWork.CompleteAsync();
+    [HttpPut("")]
+    public async Task<IActionResult> UpdateAchivement(
+        [FromBody] UpdateDriverAchievementRequest updateDriverAchievementRequest)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            return CreatedAtAction(nameof(GetDriverAchievement), new { driverId = result.DriverId }, result);
-        }
+        var result = _mapper.Map<Achievement>(updateDriverAchievementRequest);
 
-        [HttpPut("")]
-        public async Task<IActionResult> UpdateAchivement([FromBody] UpdateDriverAchievementRequest updateDriverAchievementRequest)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        await _unitOfWork.Achievements.Update(result);
+        await _unitOfWork.CompleteAsync();
 
-            var result = _mapper.Map<Achievement>(updateDriverAchievementRequest);
-
-            await _unitOfWork.Achievements.Update(result);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

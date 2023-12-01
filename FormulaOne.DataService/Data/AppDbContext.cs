@@ -3,13 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FormulaOne.DataService.Data;
 
-public class AppDbContext: DbContext
+public class AppDbContext : DbContext
 {
+    //public AppDbContext(DbContextOptions<AppDbContext> options): base() { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
     public virtual DbSet<Driver> Drivers { get; set; }
     public virtual DbSet<Achievement> Achievements { get; set; }
-
-    //public AppDbContext(DbContextOptions<AppDbContext> options): base() { }
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
