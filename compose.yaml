@@ -1,0 +1,31 @@
+version: '3.8'
+
+networks:
+  formulaone:
+services:
+  formulaone.api:
+    container_name: formulaone.api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - formulaone-db
+    environment:
+      - DB_HOST=formulaone-db
+      - DB_NAME=FormulaOne
+      - DB_SA_PASSWORD=Irshad@9148
+    networks:
+      - formulaone
+
+  formulaone-db:
+    container_name: formulaone.db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: 'Irshad@9148'
+      ACCEPT_EULA: 'Y'
+    ports:
+      - '1433:1433'
+    networks:
+      - formulaone
