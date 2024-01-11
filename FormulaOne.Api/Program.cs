@@ -9,12 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var connectionString = builder.Configuration.GetConnectionString("FormulaOneConnection");
-
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
-var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
-var newConnectionString = $"Data Source={dbHost},1433;Initial Catalog=FormulaOne;User Id=sa;Password=Irshad@9148;TrustServerCertificate=True";
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(newConnectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 
 // Add services to the container.
