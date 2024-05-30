@@ -23,6 +23,19 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:5173");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    }
+    );
+
+});
+
 
 var app = builder.Build();
 
@@ -38,5 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("ReactApp");
 
 app.Run();
